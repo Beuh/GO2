@@ -12,6 +12,7 @@ from requestmodel import *
 import webapp2_extras.appengine.auth.models
 
 import webapp2
+import debug
 
 import member
 import band
@@ -75,6 +76,12 @@ class Gig(ndb.Model):
     is_in_trash = ndb.ComputedProperty(lambda self: self.trashed_date is not None )
     default_to_attending = ndb.BooleanProperty( default=False )
     
+    @classmethod
+    def lquery(cls, *args, **kwargs):
+        if debug.DEBUG:
+            print('{0} query'.format(cls.__name__))
+        return cls.query(*args, **kwargs)
+
     def gigtime(self):
         if self.calltime:
             return self.calltime
@@ -223,7 +230,7 @@ def get_gigs_for_band_keys(the_band_key_list, num=None, start_date=None, end_dat
     
     
     
-def get_gigs_for_band_key_for_dates(the_band_key, start_date, end_date, get_canceled=True):
+def get_gigs_for_band_key_for_dates(the_band_key, start_date, end_date=None, get_canceled=True, the_limit=None):
     """ Return gig objects by band, past gigs OK """
 
     if start_date:
@@ -232,20 +239,33 @@ def get_gigs_for_band_key_for_dates(the_band_key, start_date, end_date, get_canc
     if end_date:
         end_date = adjust_date_for_band(the_band_key.get(), end_date)
 
-    if get_canceled:
-        gig_query = Gig.query(ndb.AND(Gig.date >= start_date, \
-                                      Gig.date <= end_date), \
-                                      Gig.is_in_trash == False, \
-                                      Gig.is_archived == False, \
-                                      ancestor=the_band_key).order(Gig.date)
-    else:
-        gig_query = Gig.query(ndb.AND(Gig.date >= start_date, \
-                                      Gig.date <= end_date,
-                                      Gig.is_in_trash == False, \
-                                      Gig.is_archived == False, \
-                                      Gig.is_canceled == False), \
-                                      ancestor=the_band_key).order(Gig.date)
-    gigs = gig_query.fetch()
+
+    args=[]
+
+    args.append(ndb.AND(Gig.date >= start_date, Gig.date <= end_date))
+    args.append(Gig.is_in_trash == False)
+    args.append(Gig.is_archived == False)
+
+    if not get_canceled:
+        args.append(gig_is_canceled == False)
+
+    gig_query = Gig.lquery(*args, ancestor=the_band_key).order(Gig.date)
+
+    # if get_canceled:
+    #     gig_query = Gig.query(ndb.AND(Gig.date >= start_date, \
+    #                                   Gig.date <= end_date), \
+    #                                   Gig.is_in_trash == False, \
+    #                                   Gig.is_archived == False, \
+    #                                   ancestor=the_band_key).order(Gig.date)
+    # else:
+    #     gig_query = Gig.query(ndb.AND(Gig.date >= start_date, \
+    #                                   Gig.date <= end_date,
+    #                                   Gig.is_in_trash == False, \
+    #                                   Gig.is_archived == False, \
+    #                                   Gig.is_canceled == False), \
+    #                                   ancestor=the_band_key).order(Gig.date)
+
+    gigs = gig_query.fetch(limit=the_limit)
     
     return gigs
 

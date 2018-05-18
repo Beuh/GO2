@@ -7,17 +7,30 @@
 
 <style>
 div.scrollmenu {
+    background-color: #ff0;
     overflow: auto;
     white-space: nowrap;
+    overflow-x: scroll;
+}
+
+div.scrollmenu a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
 }
 
 div.scrollthing {
-    display: inline-block;
-    *display: inline;
+    display: inline-block; 
+    padding: 5px;
+    width: 100px;
 }
+
 </style>
 
 {% endblock headcontent %}
+
 
 {% block content %}
 <div class="row">
@@ -27,6 +40,10 @@ div.scrollthing {
             {% if the_user.preferences.default_view != 2 %}
             <small>(<a href="/?default=2">{% trans %}Make this my default view!{% endtrans %}</a>)</small>
             {% endif %}
+        </div>
+        <div>&nbsp;</div>
+        <div>
+        	<a href="/newgrid">check out the new grid</a>
         </div>
         <div>&nbsp;</div>
         <div class="row">
@@ -121,269 +138,6 @@ div.scrollthing {
                 </div>
             </div>
         {% endif %}
-    </div>
-</div>
-
-<div class="row">
-    <div class="ml-auto col-2">
-        <div class="scrollmenu">
-            <div class="scrollthing">
-                <ul>
-                    <li>foo</li>
-                    <li>foo</li>
-                    <li>foo</li>
-                    <li>foo</li>
-                    <li>foo</li>
-                    <li>foo</li>
-                    <li>foo</li>
-                    <li>foo</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="mr-auto col-md-8 col-10">
-        <div class="scrollmenu">
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="scrollthing">
-                <div class="row">
-                    <div class="col-12">
-                        <ul>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                            <li>goo</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 

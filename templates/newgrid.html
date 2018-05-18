@@ -1,0 +1,111 @@
+{% extends 'go2base.html' %}
+
+{% block title %}{% trans %}Grid o'Gigs{% endtrans %}{% endblock title %}
+
+{% block headcontent %}
+
+<style>
+div.scrollmenu {
+    overflow: auto;
+    white-space: nowrap;
+}
+
+div.scrollthing {
+    display: inline-block;
+    *display: inline;
+}
+</style>
+
+{% endblock headcontent %}
+
+{% block content %}
+<div class="row">
+    <div class="mx-auto col-md-10 col-12">
+        <div class="page-header">
+            {% trans %}Grid o'Gigs{% endtrans %}
+            {% if the_user.preferences.default_view != 2 %}
+            <small>(<a href="/?default=2">{% trans %}Make this my default view!{% endtrans %}</a>)</small>
+            {% endif %}
+        </div>
+        <div>&nbsp;</div>
+        <div>
+            <a href="/grid.html">back to old grid</a>
+        </div>
+        <div>&nbsp;</div>
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-0">
+                {% if all_band_keys|length > 1 %}
+                    <div class="dropdown">
+                        <a class="btn btn-sm btn-outline-secondary dropdown-toggle text-center" href="#" role="button" data-toggle="dropdown" id="dropdownMenu1">
+                            {{ the_band_key.get().name }} <span class="caret"></span>
+                        </a>
+                        <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                            {% for a_band_key in all_band_keys %}
+                                <a class="dropdown-item" href="/newgrid?bk={{a_band_key.urlsafe()}}&m={{the_month}}&y={{the_year}}">{{a_band_key.get().name}}</a>
+                            {% endfor %}
+                        </div>
+                    </div> <!-- dropdown -->
+                {% endif %}
+                <br>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="ml-auto col-4">
+                <div class="row" style="height:30px;" id="toprow">
+                </div>
+                {% for s in the_member_assocs_by_section %}
+                    <div class="row"  style="border-bottom:solid 1px;">
+                        <div class="col-6">
+                            {{ s[0].get().name | shorten }}
+                        </div>
+                        <div class="col-6">
+                            {% for a in s[1] %}
+                                <div class="col-6">
+                                    {{ a.member.get().name }}
+                                </div>                                            
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="mr-auto col-md-8 col-10">
+                <div class="scrollmenu" id="thegigs">
+                    <i class="fas fa-spinner fa-pulse fa-lg"></i>                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block localscripts %}
+<script>
+    
+function fixtitlerows() {
+    height = $(".titlerow").first().height();
+    $(".titlerow").height(height);
+    $("#toprow").height(height);
+}
+
+function loadgigs() {
+    $.post('/gridgigs',
+            {
+                bk: '{{ the_band_key.urlsafe() }}'
+            },
+            function(responseTxt,statusTxt,xhr){
+                if(statusTxt=="success")
+                    $('#thegigs').html(responseTxt);
+                    fixtitlerows();
+                if(statusTxt=="error")
+                    alert("Error: "+xhr.status+": "+xhr.statusText);
+            });
+}
+
+$(document).ready(function() {
+    loadgigs();
+});
+
+</script>
+{% endblock localscripts %}

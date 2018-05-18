@@ -1,0 +1,30 @@
+{% for p in the_plans %}
+    {% set gig = p[0].get() %}
+     <div class="scrollthing">
+        <div class="titlerow">
+            <div style="border-bottom: solid 1px;">
+                {{ the_date_formatter(the_user,gig.date,'short') }}<br>({{ the_date_formatter(the_user,gig.date,'day') }})            
+            </div>
+            <div style="border-bottom: solid 1px;">
+                <a href="/gig_info.html?gk={{gig.key.urlsafe()}}">{{ gig.title }}</a>
+                {% if gig.is_archived %}
+                    ({% trans %}archived{% endtrans %})
+                {% else %}
+                    {% if gig.status==1 %}
+                        <i class="fas fa-check-circle" style="color:green"></i>
+                    {% elif gig.status==2 %}
+                        <i class="fas fa-times-circle" style="color:red"></i>
+                    {% else %}
+                        <i class="fas fa-question-circle" style="color:orange"></i>
+                    {% endif %}                    
+                {% endif %}</td>
+            </div>
+        </div>
+        <div>
+                {% for p in p[1] %}
+                    <div style="border-bottom:solid 1px;">goo</div>
+                {% endfor %}
+        </div>
+    </div>
+
+{% endfor %}
