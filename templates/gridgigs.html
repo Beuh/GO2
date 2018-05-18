@@ -1,3 +1,4 @@
+{% import 'plan_icon.html' as plan_icon %}
 {% for p in the_plans %}
     {% set gig = p[0].get() %}
      <div class="scrollthing">
@@ -22,7 +23,10 @@
         </div>
         <div>
                 {% for p in p[1] %}
-                    <div style="border-bottom:solid 1px;">goo</div>
+                    <div style="border-bottom:solid 1px;">
+                        {% if gig.is_archived == False and gig.status != 2 %}{{ plan_icon.icon(p.value) }}{% endif %}
+                    </div>
+
                 {% endfor %}
         </div>
     </div>
