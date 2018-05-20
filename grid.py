@@ -8,6 +8,7 @@ import gig
 import plan
 import band
 import assoc
+import json
 
 from debug import debug_print
     
@@ -188,10 +189,21 @@ class GridGigsHandler(BaseHandler):
 
         the_plans = []
         for a_gig in the_gigs:
-            the_plans.append([a_gig.key, plan.get_plans_for_gig_key(a_gig.key)])
+            plans = plan.get_plans_for_gig_key(a_gig.key)
+            member_plans={}
+            for a_plan in plans:
+                member_plans[a_plan.member.urlsafe()] = [a_plan.value, a_plan.member.get().name]
+            the_plans.append([  a_gig.key.urlsafe(), 
+                                a_gig.title, 
+                                make_grid_date_string(member.format_date_for_member, the_user, a_gig), 
+                                member_plans ])
 
         template_args= {
-            'the_plans' : the_plans,
-            'the_date_formatter' : member.format_date_for_member,
+            'the_plans' : the_plans
         }
-        self.render_template('gridgigs.html', template_args)
+        self.response.write(json.dumps(template_args))
+        # self.render_template('gridgigs.html', template_args)
+
+def make_grid_date_string(the_date_formatter, the_user, gig):
+    return '{0}<br>{1}'.format(the_date_formatter(the_user,gig.date,'short'),the_date_formatter(the_user,gig.date,'day'))
+

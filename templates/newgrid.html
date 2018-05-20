@@ -61,8 +61,9 @@ div.scrollthing {
                         </div>
                         <div class="col-6">
                             {% for a in s[1] %}
-                                <div class="col-6">
-                                    {{ a.member.get().name }}
+                                <div class="col-6 memberrow" data-member="{{a.member}}">
+                                    {% set the_member = a.member.get() %}
+	                                <a href="/member_info.html?mk={{a.member.urlsafe()}}">{% if the_member.nickname %}{{the_member.nickname | shorten }}{% else %}{{ the_member.name | shorten}}{% endif %}</a>
                                 </div>                                            
                             {% endfor %}
                         </div>
@@ -82,11 +83,43 @@ div.scrollthing {
 
 {% block localscripts %}
 <script>
+
+var the_members = [];
     
 function fixtitlerows() {
     height = $(".titlerow").first().height();
     $(".titlerow").height(height);
     $("#toprow").height(height);
+}
+
+function handlegigplans(the_plans) {
+	$('#thegigs').html('');
+
+	the_plans.forEach( function(gig) {
+		the_new_block = 
+			'<div class="scrollthing">'
+				+ '<div class="titlerow">'
+					+ '<div style="border-bottom: solid 1px; border-right: solid 1px;">'
+						+ gig[2]
+					+ '</div>'
+					+ '<div style="border-bottom: solid 1px;">'
+						+ gig[1]
+					+ '</div>'
+				+ '</div>';
+
+			the_members.forEach( function(mindex) {
+				the_new_block = the_new_block +
+					'<div style="border-bottom: solid 1px;">'
+						+ gig[3][mindex][0]
+					+ '</div>';
+
+			});
+
+			the_new_block = the_new_block
+			+ '</div>';
+
+		$('#thegigs').append(the_new_block);
+	});
 }
 
 function loadgigs() {
@@ -96,14 +129,26 @@ function loadgigs() {
             },
             function(responseTxt,statusTxt,xhr){
                 if(statusTxt=="success")
-                    $('#thegigs').html(responseTxt);
+                	return_data = JSON.parse(responseTxt)
+                	the_plans = return_data['the_plans']
+                    // $('#thegigs').html(responseTxt);
+                    handlegigplans(the_plans);
                     fixtitlerows();
                 if(statusTxt=="error")
                     alert("Error: "+xhr.status+": "+xhr.statusText);
             });
 }
 
+function setupmemberindex() {
+	{% for s in the_member_assocs_by_section %}
+		{% for m in s[1] %}
+			the_members.push('{{m.member.urlsafe()}}');
+		{% endfor %}
+	{% endfor %}
+}
+
 $(document).ready(function() {
+	setupmemberindex();
     loadgigs();
 });
 

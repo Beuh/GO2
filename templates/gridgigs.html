@@ -22,12 +22,11 @@
             </div>
         </div>
         <div>
-                {% for p in p[1] %}
-                    <div style="border-bottom:solid 1px;">
-                        {% if gig.is_archived == False and gig.status != 2 %}{{ plan_icon.icon(p.value) }}{% endif %}
-                    </div>
-
-                {% endfor %}
+            {% for p in p[1] %}
+                <div style="border-bottom:solid 1px;">
+                    {% if gig.is_archived == False and gig.status != 2 %}{{ plan_icon.icon(p.value) }}{% endif %}
+                </div>
+            {% endfor %}
         </div>
     </div>
 
