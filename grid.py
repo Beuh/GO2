@@ -156,7 +156,8 @@ class NewMainPage(BaseHandler):
             'all_band_keys' : the_band_keys,
             'the_band_key' : the_band_key,
             'the_member_assocs_by_section' : the_member_assocs,
-            'grid_is_active' : True
+            'grid_is_active' : True,
+            'start_month' : datetime.datetime.now().month
         }
         self.render_template('newgrid.html', template_args)
 
@@ -166,15 +167,21 @@ class GridGigsHandler(BaseHandler):
     def post(self):
         the_user=self.user
 
-
         # find the band we're interested in
         band_key_str=self.request.get("bk", None)
-        if band_key_str is None:
+        if band_key_str is None: 
             the_band_key = the_band_keys[0]
         else:
             the_band_key = ndb.Key(urlsafe=band_key_str)
 
-        start_date = datetime.datetime.now().replace(day=1)
+        numstr=self.request.get("month", None)
+        if numstr is None or numstr=='0':
+            start_date = datetime.datetime.now().replace(day=1)
+            month_num = start_date.month
+        else:
+            month_num = int(numstr)
+            start_date = datetime.datetime.now().replace(day=1, month=month_num)
+
         end_date = start_date
         if (end_date.month < 12):
             end_date = end_date.replace(month = end_date.month + 1, day = 1)
@@ -199,7 +206,8 @@ class GridGigsHandler(BaseHandler):
                                 member_plans ])
 
         template_args= {
-            'the_plans' : the_plans
+            'the_plans' : the_plans,
+            'the_month' : month_num
         }
         self.response.write(json.dumps(template_args))
         # self.render_template('gridgigs.html', template_args)

@@ -51,7 +51,7 @@ div.scrollthing {
         </div>
 
         <div class="row">
-            <div class="ml-auto col-4">
+            <div class="ml-auto">
                 <div class="row" style="height:30px;" id="toprow">
                 </div>
                 {% for s in the_member_assocs_by_section %}
@@ -61,7 +61,7 @@ div.scrollthing {
                         </div>
                         <div class="col-6">
                             {% for a in s[1] %}
-                                <div class="col-6 memberrow" data-member="{{a.member}}">
+                                <div class="memberrow"  style="border-bottom: solid 1px;" data-member="{{a.member}}">
                                     {% set the_member = a.member.get() %}
 	                                <a href="/member_info.html?mk={{a.member.urlsafe()}}">{% if the_member.nickname %}{{the_member.nickname | shorten }}{% else %}{{ the_member.name | shorten}}{% endif %}</a>
                                 </div>                                            
@@ -76,16 +76,23 @@ div.scrollthing {
                     <i class="fas fa-spinner fa-pulse fa-lg"></i>                   
                 </div>
             </div>
+            <div>
+            	<a href="#" onclick="moreright();">
+            		Next Month
+            		<i class="fas fa-chevron-right fa-2x" style="color:gray;" aria-hidden="true"></i>
+            	</a>'
+			</div>
         </div>
     </div>
 </div>
 {% endblock content %}
 
 {% block localscripts %}
+<script src="/js/plan_buttons.js"></script>
 <script>
-
 var the_members = [];
-    
+var the_latest_month = {{ start_month }};
+
 function fixtitlerows() {
     height = $(".titlerow").first().height();
     $(".titlerow").height(height);
@@ -93,7 +100,6 @@ function fixtitlerows() {
 }
 
 function handlegigplans(the_plans) {
-	$('#thegigs').html('');
 
 	the_plans.forEach( function(gig) {
 		the_new_block = 
@@ -108,27 +114,49 @@ function handlegigplans(the_plans) {
 				+ '</div>';
 
 			the_members.forEach( function(mindex) {
-				the_new_block = the_new_block +
-					'<div style="border-bottom: solid 1px;">'
-						+ gig[3][mindex][0]
-					+ '</div>';
+				the_new_block += '<div style="border-bottom: solid 1px;">';
+				var a_plan = gig[3][mindex];
+				if (a_plan) {
+					the_new_block += get_plan_button_guts(String(a_plan[0]));
+				} else {
+					the_new_block += get_plan_button_guts('0');
+				}
+				the_new_block += '</div>';
 
 			});
 
 			the_new_block = the_new_block
 			+ '</div>';
-
 		$('#thegigs').append(the_new_block);
 	});
 }
 
-function loadgigs() {
+function addrightbutton(the_month) {
+	righticon = '<div class="scrollthing" id="rightarrow"><a href="#" onclick="moreright('+the_month+');">Next Month';
+	righticon += '<i class="fas fa-chevron-right fa-2x" style="color:gray;" aria-hidden="true"></i></a>';
+	righticon += '</div>';
+	$('#thegigs').append(righticon);
+
+}
+
+function moreright() {
+	console.log('right!');
+	the_latest_month += 1;
+	loadgigs(false);
+}
+
+function loadgigs(first) {
+	console.log(the_latest_month);
     $.post('/gridgigs',
             {
-                bk: '{{ the_band_key.urlsafe() }}'
+                bk: '{{ the_band_key.urlsafe() }}',
+                month: the_latest_month
             },
             function(responseTxt,statusTxt,xhr){
                 if(statusTxt=="success")
+                	if (first) {
+                		$('#thegigs').html('');
+                	}
                 	return_data = JSON.parse(responseTxt)
                 	the_plans = return_data['the_plans']
                     // $('#thegigs').html(responseTxt);
@@ -149,7 +177,7 @@ function setupmemberindex() {
 
 $(document).ready(function() {
 	setupmemberindex();
-    loadgigs();
+    loadgigs(true);
 });
 
 </script>

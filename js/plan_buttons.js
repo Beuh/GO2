@@ -1,6 +1,5 @@
 // CODE FOR PLAN BUTTONS
-function set_plan_button(the_id, the_value) {
-
+function get_plan_button_guts(the_value) {
     var the_result='<i class="fa fa-minus fa-sm" style="color:black"></i>'
 
     switch(the_value) {
@@ -23,7 +22,12 @@ function set_plan_button(the_id, the_value) {
             the_result='<i class="fas fa-times" style="color:black"></i>'
             break;
     }
-    
+    return the_result;
+}
+
+function set_plan_button(the_id, the_value) {
+
+    var the_result = get_plan_button_guts(the_value);
     document.getElementById(the_id).innerHTML=the_result;
 }
 
