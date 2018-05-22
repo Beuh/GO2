@@ -188,6 +188,8 @@ class GridGigsHandler(BaseHandler):
         else:
             end_date = end_date.replace(year = end_date.year + 1, month=1, day=1)
 
+        end_date = end_date - datetime.timedelta(days=1)
+
         show_canceled=True
         if the_user.preferences and the_user.preferences.hide_canceled_gigs:
             show_canceled=False
