@@ -51,32 +51,31 @@ div.scrollthing {
         </div>
 
         <div class="row">
-            <div class="ml-auto">
+            <div class="col-4" >
                 <div class="row" style="height:30px;" id="toprow">
                 </div>
                 {% for s in the_member_assocs_by_section %}
-                    <div class="row"  style="border-bottom:solid 1px;">
+                    <div class="row sectionrow">
                         <div class="col-6">
-                            {{ s[0].get().name | shorten }}
+                            {{ s[0].get().name }}
                         </div>
-                        <div class="col-6">
+                        <div class="col-6" style="padding-right:0px">
                             {% for a in s[1] %}
-                                <div class="memberrow"  style="border-bottom: solid 1px;" data-member="{{a.member}}">
+                                <div class="memberrow" id="{{a.member.urlsafe()}}">
                                     {% set the_member = a.member.get() %}
-	                                <a href="/member_info.html?mk={{a.member.urlsafe()}}">{% if the_member.nickname %}{{the_member.nickname | shorten }}{% else %}{{ the_member.name | shorten}}{% endif %}</a>
+	                                <a href="/member_info.html?mk={{a.member.urlsafe()}}">{% if the_member.nickname %}{{the_member.nickname }}{% else %}{{ the_member.name }}{% endif %}</a>
                                 </div>                                            
                             {% endfor %}
                         </div>
                     </div>
                 {% endfor %}
             </div>
-
-            <div class="mr-auto col-md-8 col-10">
+            <div class="col-5" style="padding-left:0px;">
                 <div class="scrollmenu" id="thegigs">
                     <i class="fas fa-spinner fa-pulse fa-lg"></i>                   
                 </div>
             </div>
-            <div>
+            <div class="col-1">
             	<a href="#" onclick="moreright();">
             		Next Month
             		<i class="fas fa-chevron-right fa-2x" style="color:gray;" aria-hidden="true"></i>
@@ -92,6 +91,7 @@ div.scrollthing {
 <script>
 var the_members = [];
 var the_latest_month = {{ start_month }};
+var the_latest_year = {{ start_year }};
 
 function fixtitlerows() {
     height = $(".titlerow").first().height();
@@ -105,16 +105,17 @@ function handlegigplans(the_plans) {
 		the_new_block = 
 			'<div class="scrollthing">'
 				+ '<div class="titlerow">'
-					+ '<div style="border-bottom: solid 1px; border-right: solid 1px;">'
+					+ '<div class="giginfo">'
 						+ gig[2]
 					+ '</div>'
-					+ '<div style="border-bottom: solid 1px;">'
+					+ '<div class="giginfo">'
 						+ gig[1]
 					+ '</div>'
 				+ '</div>';
 
 			the_members.forEach( function(mindex) {
-				the_new_block += '<div style="border-bottom: solid 1px;">';
+                var rowheight = $('#'+mindex).height();
+				the_new_block += '<div class="gigplan" style="height: '+rowheight+'px; text-align: center;">';
 				var a_plan = gig[3][mindex];
 				if (a_plan) {
 					the_new_block += get_plan_button_guts(String(a_plan[0]));
@@ -131,6 +132,19 @@ function handlegigplans(the_plans) {
 	});
 }
 
+function handlenogigsformonth(the_month_string) {
+
+    the_new_block='<div class="scrollthing" style="vertical-align: top;">';
+    the_new_block+='<div class="titlerow">'
+    the_new_block+='<div class="nogiginfo">'
+    the_new_block+=the_month_string;
+    the_new_block+='</div>';
+    the_new_block+='</div>';
+    the_new_block+='</div>';
+    $('#thegigs').append(the_new_block);
+
+}
+
 function addrightbutton(the_month) {
 	righticon = '<div class="scrollthing" id="rightarrow"><a href="#" onclick="moreright('+the_month+');">Next Month';
 	righticon += '<i class="fas fa-chevron-right fa-2x" style="color:gray;" aria-hidden="true"></i></a>';
@@ -140,17 +154,16 @@ function addrightbutton(the_month) {
 }
 
 function moreright() {
-	console.log('right!');
 	the_latest_month += 1;
 	loadgigs(false);
 }
 
 function loadgigs(first) {
-	console.log(the_latest_month);
     $.post('/gridgigs',
             {
                 bk: '{{ the_band_key.urlsafe() }}',
-                month: the_latest_month
+                month: the_latest_month,
+                year: the_latest_year
             },
             function(responseTxt,statusTxt,xhr){
                 if(statusTxt=="success")
@@ -159,8 +172,14 @@ function loadgigs(first) {
                 	}
                 	return_data = JSON.parse(responseTxt)
                 	the_plans = return_data['the_plans']
+                    the_latest_month = return_data['the_month']
+                    the_latest_year = return_data['the_year']
                     // $('#thegigs').html(responseTxt);
-                    handlegigplans(the_plans);
+                    if (the_plans.length > 0) {
+                        handlegigplans(the_plans);
+                    } else {
+                        handlenogigsformonth(return_data['the_month_string'])
+                    }
                     fixtitlerows();
                 if(statusTxt=="error")
                     alert("Error: "+xhr.status+": "+xhr.statusText);

@@ -13,6 +13,8 @@ import json
 from debug import debug_print
     
 import datetime
+from webapp2_extras import i18n
+from webapp2_extras.i18n import gettext as _
 
 class MainPage(BaseHandler):
 
@@ -157,7 +159,8 @@ class NewMainPage(BaseHandler):
             'the_band_key' : the_band_key,
             'the_member_assocs_by_section' : the_member_assocs,
             'grid_is_active' : True,
-            'start_month' : datetime.datetime.now().month
+            'start_month' : datetime.datetime.now().month,
+            'start_year' : datetime.datetime.now().year,
         }
         self.render_template('newgrid.html', template_args)
 
@@ -175,12 +178,21 @@ class GridGigsHandler(BaseHandler):
             the_band_key = ndb.Key(urlsafe=band_key_str)
 
         numstr=self.request.get("month", None)
-        if numstr is None or numstr=='0':
+        yearstr=self.request.get("year", None)
+
+        if numstr is None or numstr=='0' or yearstr is None or yearstr=='0':
             start_date = datetime.datetime.now().replace(day=1)
             month_num = start_date.month
+            year_num = start_date.year
         else:
             month_num = int(numstr)
-            start_date = datetime.datetime.now().replace(day=1, month=month_num)
+            year_num = int(yearstr)
+            year_add = 0
+            if month_num > 12:
+                month_num = 1
+                year_num += 1
+            start_date = datetime.datetime.now()
+            start_date = start_date.replace(day=1, month=month_num, year=year_num)
 
         end_date = start_date
         if (end_date.month < 12):
@@ -209,7 +221,9 @@ class GridGigsHandler(BaseHandler):
 
         template_args= {
             'the_plans' : the_plans,
-            'the_month' : month_num
+            'the_month' : month_num,
+            'the_year' : year_num,
+            'the_month_string' : '{0}:<br>{1}'.format(member.format_date_for_member(the_user, start_date, 'month'),_('No Gigs!')),
         }
         self.response.write(json.dumps(template_args))
         # self.render_template('gridgigs.html', template_args)

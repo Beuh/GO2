@@ -174,3 +174,32 @@ a {
     border-color: #007bff;
 }
 
+/* css for grid page */
+ .sectionrow {
+box-shadow: 0px -1px 0px #bbb inset; 
+}
+
+.memberrow {
+box-shadow: 0px -1px 0px #bbb inset; 
+}
+
+.scrollthing {
+  border-right: solid 1px #bbb;
+  box-shadow: 0px -1px 0px #bbb inset; 
+}
+
+.giginfo {
+  box-shadow: 0px -1px 0px #bbb inset;
+  text-align: center;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.nogiginfo {
+  padding-right: 10px;
+  padding-left: 10px;  
+}
+
+.gigplan {
+  box-shadow: 0px -1px 0px #bbb inset; 
+}
