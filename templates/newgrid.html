@@ -109,7 +109,7 @@ function handlegigplans(the_plans) {
 						+ gig[2]
 					+ '</div>'
 					+ '<div class="giginfo">'
-						+ gig[1]
+						+ '<a href="/gig_info.html?gk='+gig[0]+'">'+gig[1]+'</a>'
 					+ '</div>'
 				+ '</div>';
 
@@ -140,6 +140,11 @@ function handlenogigsformonth(the_month_string) {
     the_new_block+=the_month_string;
     the_new_block+='</div>';
     the_new_block+='</div>';
+	the_members.forEach( function(mindex) {
+        var rowheight = $('#'+mindex).height();
+		the_new_block += '<div class="gigplan" style="height: '+rowheight+'px; text-align: center;">';
+		the_new_block += '&nbsp;</div>';
+	});
     the_new_block+='</div>';
     $('#thegigs').append(the_new_block);
 
@@ -207,6 +212,7 @@ function fixmembernameheights() {
 		});
 		if (section_height > total_children_height) {			
 			cell_to_adjust = $(member_cell).children().last();
+			console.log(cell_to_adjust);
 			$(cell_to_adjust).height($(cell_to_adjust).height() + (section_height-total_children_height));
 		}
 	});
