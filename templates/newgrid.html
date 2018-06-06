@@ -55,9 +55,18 @@ div.scrollthing {
                 <div class="row" style="height:30px;" id="toprow">
                 </div>
                 {% for s in the_member_assocs_by_section %}
-                    <div class="row sectionrow">
+                    {% if s[0] %}
+                        {% set the_section = s[0].get() %}
+                    {% else %}
+                        {% set the_section = None %}
+                    {% endif %}
+                    <div class="row sectionrow" id="{% if the_section %}{{ the_section.key.urlsafe() }}{% else %}nosection{% endif %}">
                         <div class="col-6">
-                            {{ s[0].get().name }}
+                            {% if the_section %}
+                                {{ the_section.name }}
+                            {% else %}
+                                {% trans %}No Section{% endtrans %}
+                            {% endif %}
                         </div>
                         <div class="col-6 sectionmembers" style="padding-right:0px;">
                             {% for a in s[1] %}
@@ -94,7 +103,18 @@ var the_latest_month = {{ start_month }};
 var the_latest_year = {{ start_year }};
 
 function fixtitlerows() {
-    height = $(".titlerow").first().height();
+    // height = $(".titlerow").first().height();
+    // $(".titlerow").height(height);
+    // $("#toprow").height(height);
+
+    height = 0
+    $(".titlerow").each( function() {
+        console.log($(this));
+        if($(this).height() > height) {
+            height = $(this).height();
+        }
+    });
+    console.log("height is "+height);
     $(".titlerow").height(height);
     $("#toprow").height(height);
 }
@@ -106,28 +126,48 @@ function handlegigplans(the_plans) {
 			'<div class="scrollthing">'
 				+ '<div class="titlerow">'
 					+ '<div class="giginfo">'
-						+ gig[2]
+						+ gig['date']
 					+ '</div>'
 					+ '<div class="giginfo">'
-						+ '<a href="/gig_info.html?gk='+gig[0]+'">'+gig[1]+'</a>'
-					+ '</div>'
-				+ '</div>';
+						+ '<a href="/gig_info.html?gk='+gig['key']+'">'+gig['title']+'</a>'
+                        + '<br>'
+        if (gig['archived']) {
+            the_new_block += '{% trans %}archived{% endtrans %}';
+        } else {
+            if (gig['status'] == 1) {
+                the_new_block += '<i class="fas fa-check-circle" style="color:green"></i>';
+            } else if (gig['status']==2 ){
+                the_new_block += '<i class="fas fa-times-circle" style="color:red"></i>';
+            } else {
+                the_new_block += '<i class="fas fa-question-circle" style="color:orange"></i>';             
+            }
+        }
+        the_new_block += '</div>'
+				 + '</div>';
 
-			the_members.forEach( function(mindex) {
+		the_members.forEach( function(entry) {
+            if (entry[0]=='m') {
+                mindex = entry[1];
                 var rowheight = $('#'+mindex).height();
 				the_new_block += '<div class="gigplan" style="height: '+rowheight+'px; text-align: center;">';
-				var a_plan = gig[3][mindex];
-				if (a_plan) {
-					the_new_block += get_plan_button_guts(String(a_plan[0]));
-				} else {
-					the_new_block += get_plan_button_guts('0');
-				}
+                if (!gig['archived']) {
+    				var a_plan = gig['plans'][mindex];
+    				if (a_plan) {
+    					the_new_block += get_plan_button_guts(String(a_plan[0]));
+    				} else {
+    					the_new_block += get_plan_button_guts('0');
+    				}
+                } else {
+                    the_new_block += '&nbsp;';
+                }
 				the_new_block += '</div>';
-
-			});
-
-			the_new_block = the_new_block
-			+ '</div>';
+            } else {
+                sindex = entry[1];
+                var rowheight = $('#'+sindex).height();
+                the_new_block += '<div class="gigplan" style="height: '+rowheight+'px; text-align: center;"></div>';                    
+            }
+		});
+		the_new_block += '</div>';
 		$('#thegigs').append(the_new_block);
 	});
 }
@@ -140,10 +180,16 @@ function handlenogigsformonth(the_month_string) {
     the_new_block+=the_month_string;
     the_new_block+='</div>';
     the_new_block+='</div>';
-	the_members.forEach( function(mindex) {
-        var rowheight = $('#'+mindex).height();
-		the_new_block += '<div class="gigplan" style="height: '+rowheight+'px; text-align: center;">';
-		the_new_block += '&nbsp;</div>';
+	the_members.forEach( function(entry) {
+        if (entry[0]=='m') {
+            mindex = entry[1];
+            var rowheight = $('#'+mindex).height();
+    		the_new_block += '<div class="gigplan" style="height: '+rowheight+'px; text-align: center;">&nbsp;</div>';
+        } else {
+            sindex = entry[1];
+            var rowheight = $('#'+sindex).height();
+            the_new_block += '<div class="gigplan" style="height: '+rowheight+'px; text-align: center;">&nbsp;</div>';
+        }
 	});
     the_new_block+='</div>';
     $('#thegigs').append(the_new_block);
@@ -193,9 +239,13 @@ function loadgigs(first) {
 
 function setupmemberindex() {
 	{% for s in the_member_assocs_by_section %}
-		{% for m in s[1] %}
-			the_members.push('{{m.member.urlsafe()}}');
-		{% endfor %}
+        {% if s[1] %}
+    		{% for m in s[1] %}
+    			the_members.push(['m','{{m.member.urlsafe()}}']);
+    		{% endfor %}
+        {% else %}
+            the_members.push(['s','{{s[0].urlsafe()}}']);
+        {% endif %}
 	{% endfor %}
 }
 
@@ -212,7 +262,6 @@ function fixmembernameheights() {
 		});
 		if (section_height > total_children_height) {			
 			cell_to_adjust = $(member_cell).children().last();
-			console.log(cell_to_adjust);
 			$(cell_to_adjust).height($(cell_to_adjust).height() + (section_height-total_children_height));
 		}
 	});

@@ -206,18 +206,24 @@ class GridGigsHandler(BaseHandler):
         if the_user.preferences and the_user.preferences.hide_canceled_gigs:
             show_canceled=False
 
-        the_gigs = gig.get_gigs_for_band_key_for_dates(the_band_key, start_date, end_date, get_canceled=show_canceled)
+        the_gigs = gig.get_gigs_for_band_key_for_dates(the_band_key, start_date, end_date, get_canceled=show_canceled, get_archived=True)
 
         the_plans = []
         for a_gig in the_gigs:
-            plans = plan.get_plans_for_gig_key(a_gig.key)
-            member_plans={}
-            for a_plan in plans:
-                member_plans[a_plan.member.urlsafe()] = [a_plan.value, a_plan.member.get().name]
-            the_plans.append([  a_gig.key.urlsafe(), 
-                                a_gig.title, 
-                                make_grid_date_string(member.format_date_for_member, the_user, a_gig), 
-                                member_plans ])
+            if (a_gig.is_archived is not True):
+                plans = plan.get_plans_for_gig_key(a_gig.key)
+                member_plans={}
+                for a_plan in plans:
+                    member_plans[a_plan.member.urlsafe()] = [a_plan.value, a_plan.member.get().name]
+            else:
+                member_plans={}
+
+            the_plans.append({  'key': a_gig.key.urlsafe(), 
+                                'title': a_gig.title, 
+                                'date': make_grid_date_string(member.format_date_for_member, the_user, a_gig), 
+                                'archived': a_gig.is_archived,
+                                'status': a_gig.status,
+                                'plans': member_plans })
 
         template_args= {
             'the_plans' : the_plans,

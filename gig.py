@@ -230,7 +230,7 @@ def get_gigs_for_band_keys(the_band_key_list, num=None, start_date=None, end_dat
     
     
     
-def get_gigs_for_band_key_for_dates(the_band_key, start_date, end_date=None, get_canceled=True, the_limit=None):
+def get_gigs_for_band_key_for_dates(the_band_key, start_date, end_date=None, get_canceled=True, the_limit=None, get_archived=False):
     """ Return gig objects by band, past gigs OK """
 
     if start_date:
@@ -244,7 +244,8 @@ def get_gigs_for_band_key_for_dates(the_band_key, start_date, end_date=None, get
 
     args.append(ndb.AND(Gig.date >= start_date, Gig.date <= end_date))
     args.append(Gig.is_in_trash == False)
-    args.append(Gig.is_archived == False)
+    if get_archived is False:
+        args.append(Gig.is_archived == False)
 
     if not get_canceled:
         args.append(gig_is_canceled == False)
