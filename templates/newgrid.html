@@ -108,14 +108,14 @@ function fixtitlerows() {
     // $("#toprow").height(height);
 
     height = 0
-    $(".titlerow").each( function() {
+    $(".scrolltitlerow").each( function() {
         console.log($(this));
         if($(this).height() > height) {
             height = $(this).height();
         }
     });
     console.log("height is "+height);
-    $(".titlerow").height(height);
+    $(".scrolltitlerow").height(height);
     $("#toprow").height(height);
 }
 
@@ -124,7 +124,7 @@ function handlegigplans(the_plans) {
 	the_plans.forEach( function(gig) {
 		the_new_block = 
 			'<div class="scrollthing">'
-				+ '<div class="titlerow">'
+				+ '<div class="scrolltitlerow">'
 					+ '<div class="giginfo">'
 						+ gig['date']
 					+ '</div>'
@@ -175,7 +175,7 @@ function handlegigplans(the_plans) {
 function handlenogigsformonth(the_month_string) {
 
     the_new_block='<div class="scrollthing" style="vertical-align: top;">';
-    the_new_block+='<div class="titlerow">'
+    the_new_block+='<div class="scrolltitlerow">'
     the_new_block+='<div class="nogiginfo">'
     the_new_block+=the_month_string;
     the_new_block+='</div>';
