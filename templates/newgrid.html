@@ -33,7 +33,7 @@ div.scrollthing {
         </div>
         <div>&nbsp;</div>
         <div class="row">
-            <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-0">
+            <div class="col-12">
                 {% if all_band_keys|length > 1 %}
                     <div class="dropdown">
                         <a class="btn btn-sm btn-outline-secondary dropdown-toggle text-center" href="#" role="button" data-toggle="dropdown" id="dropdownMenu1">
@@ -52,7 +52,8 @@ div.scrollthing {
 
         <div class="row">
             <div class="col-4">
-                <div class="row" style="height:30px;" id="toprow">
+                <div class="row" id="toprow">
+                    &nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>
                 </div>
                 {% for s in the_member_assocs_by_section %}
                     {% if s[0] %}
@@ -79,16 +80,13 @@ div.scrollthing {
                     </div>
                 {% endfor %}
             </div>
-            <div class="col-5" style="padding-left:0px;">
-                <div class="scrollmenu" id="thegigs">
+            <div class="col-7" style="padding-left:0px;">
+                <div class="scrollmenu" id="thegigs" onscroll="scrolled();">
                     <i class="fas fa-spinner fa-pulse fa-lg"></i>                   
                 </div>
             </div>
             <div class="col-1">
-            	<a href="#" onclick="moreright();">
-            		Next Month
-            		<i class="fas fa-chevron-right fa-2x" style="color:gray;" aria-hidden="true"></i>
-            	</a>'
+            	<a href="#" onclick="moreright();"><i class="fas fa-chevron-right fa-2x" style="color:gray;" aria-hidden="true"></i></a>
 			</div>
         </div>
     </div>
@@ -107,14 +105,12 @@ function fixtitlerows() {
     // $(".titlerow").height(height);
     // $("#toprow").height(height);
 
-    height = 0
+    height = $("#toprow").height();
     $(".scrolltitlerow").each( function() {
-        console.log($(this));
         if($(this).height() > height) {
             height = $(this).height();
         }
     });
-    console.log("height is "+height);
     $(".scrolltitlerow").height(height);
     $("#toprow").height(height);
 }
@@ -231,7 +227,9 @@ function loadgigs(first) {
                     } else {
                         handlenogigsformonth(return_data['the_month_string'])
                     }
-                    fixtitlerows();
+                    setTimeout(function() {
+                        fixtitlerows();
+                    }, 1000);
                 if(statusTxt=="error")
                     alert("Error: "+xhr.status+": "+xhr.statusText);
             });
@@ -265,6 +263,15 @@ function fixmembernameheights() {
 			$(cell_to_adjust).height($(cell_to_adjust).height() + (section_height-total_children_height));
 		}
 	});
+}
+
+function scrolled() {
+    thething = $("#thegigs")
+    pos = thething.scrollLeft();
+    max = thething.get(0).scrollWidth - thething.get(0).clientWidth
+    if (pos == max) {
+        moreright();
+    }
 }
 
 $(document).ready(function() {

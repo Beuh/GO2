@@ -184,6 +184,7 @@ class GridGigsHandler(BaseHandler):
             start_date = datetime.datetime.now().replace(day=1)
             month_num = start_date.month
             year_num = start_date.year
+            start_date = start_date.replace(hour=0, minute=0, second=0, microsecond=0)
         else:
             month_num = int(numstr)
             year_num = int(yearstr)
@@ -192,7 +193,8 @@ class GridGigsHandler(BaseHandler):
                 month_num = 1
                 year_num += 1
             start_date = datetime.datetime.now()
-            start_date = start_date.replace(day=1, month=month_num, year=year_num)
+            start_date = start_date.replace(day=1, month=month_num, year=year_num, hour=0, minute=0, second=0, microsecond=0)
+
 
         end_date = start_date
         if (end_date.month < 12):
@@ -229,7 +231,7 @@ class GridGigsHandler(BaseHandler):
             'the_plans' : the_plans,
             'the_month' : month_num,
             'the_year' : year_num,
-            'the_month_string' : '{0}:<br>{1}'.format(member.format_date_for_member(the_user, start_date, 'month'),_('No Gigs!')),
+            'the_month_string' : '{0}<br>{1}<br>&nbsp;<br>&nbsp;'.format(member.format_date_for_member(the_user, start_date, 'month'),_('No Gigs!')),
         }
         self.response.write(json.dumps(template_args))
         # self.render_template('gridgigs.html', template_args)
