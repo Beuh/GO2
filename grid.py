@@ -180,7 +180,7 @@ class GridGigsHandler(BaseHandler):
         numstr=self.request.get("month", None)
         yearstr=self.request.get("year", None)
 
-        if numstr is None or numstr=='0' or yearstr is None or yearstr=='0':
+        if numstr is None or yearstr is None:
             start_date = datetime.datetime.now().replace(day=1)
             month_num = start_date.month
             year_num = start_date.year
@@ -192,6 +192,9 @@ class GridGigsHandler(BaseHandler):
             if month_num > 12:
                 month_num = 1
                 year_num += 1
+            elif month_num == 0:
+                month_num = 12
+                year_num -= 1
             start_date = datetime.datetime.now()
             start_date = start_date.replace(day=1, month=month_num, year=year_num, hour=0, minute=0, second=0, microsecond=0)
 
