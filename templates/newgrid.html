@@ -53,7 +53,9 @@ div.scrollthing {
         <div class="row">
             <div class="col-4">
                 <div class="row" id="toprow">
-                    &nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>
+                    <div class="col-12 text-right">
+                        <a href="#" onclick="moreleft();"><i class="fas fa-chevron-left fa-2x" style="color:gray;" aria-hidden="true"></i></a>
+                    </div>
                 </div>
                 {% for s in the_member_assocs_by_section %}
                     {% if s[0] %}
@@ -86,7 +88,6 @@ div.scrollthing {
                 </div>
             </div>
             <div class="col-1">
-                <a href="#" onclick="moreleft();"><i class="fas fa-chevron-left fa-2x" style="color:gray;" aria-hidden="true"></i></a>
             	<a href="#" onclick="moreright();"><i class="fas fa-chevron-right fa-2x" style="color:gray;" aria-hidden="true"></i></a>
 			</div>
         </div>
