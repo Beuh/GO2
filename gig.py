@@ -75,6 +75,8 @@ class Gig(ndb.Model):
     trashed_date = ndb.DateTimeProperty( default=None )
     is_in_trash = ndb.ComputedProperty(lambda self: self.trashed_date is not None )
     default_to_attending = ndb.BooleanProperty( default=False )
+
+    status_names=["Unconfirmed","Confirmed!","Cancelled!"]
     
     @classmethod
     def lquery(cls, *args, **kwargs):
@@ -899,6 +901,7 @@ class PrintSetlist(BaseHandler):
 
         template_args = {
             'the_gig' : the_gig,
+            'the_date_formatter' : member.format_date_for_member
         }
         self.render_template('print_setlist.html', template_args)
         

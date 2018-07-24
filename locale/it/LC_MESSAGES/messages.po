@@ -64,7 +64,7 @@ msgstr ""
 "membri della {0} e puoi cominciare a utilizzare il\n"
 " Gig-o-Matic per gestire la tua partecipazione in banda.\n"
 "\n"
-"http://gig-o-matic.appspot.com/band_info.html?bk={1}\n"
+"http://www.gig-o-matic.com/band_info.html?bk={1}\n"
 "\n"
 "Grazie,\n"
 "Il Team Gig-o-Matic"
@@ -209,7 +209,7 @@ msgstr ""
 "Gig-o-Matic per\n"
 "confermarne l’iscrizione.\n"
 "\n"
-"http://gig-o-matic.appspot.com/band_info.html?bk={2}\n"
+"http://www.gig-o-matic.com/band_info.html?bk={2}\n"
 "\n"
 "Grazie,\n"
 "Il Team Gig-o-Matic"
@@ -240,7 +240,7 @@ msgstr ""
 "come membro della {0}, ti invitiamo a iscriverti al Gig-o-Matic per "
 "gestire la tua partecipazione alle suonate. Per iscriverti, devi solo "
 "crearti una password. Dopodiché potrai andare su "
-"http://gig-o-matic.appspot.com per accedere.\n"
+"http://www.gig-o-matic.com per accedere.\n"
 "\n"
 "Per creare la tua password clicca su questo link:\n"
 "{1}\n"
@@ -1349,7 +1349,7 @@ msgstr "...dare un suggerimento?"
 #: templates/help.html:18
 msgid "help_answer_3"
 msgstr ""
-"I want to <a href=\"mailto:gigomatic.superuser@gmail.com\">hear about "
+"I want to <a href=\"mailto:superuser@gig-o-matic.com\">hear about "
 "it</a>."
 
 #: templates/help.html:19
@@ -1358,7 +1358,7 @@ msgstr "...contattare l’amministratore?"
 
 #: templates/help.html:19
 msgid "help_answer_4"
-msgstr "<a href=\"mailto:gigomatic.superuser@gmail.com\">Email Here!</a>"
+msgstr "<a href=\"mailto:superuser@gig-o-matic.com\">Email Here!</a>"
 
 #: templates/help_band_request.html:3
 #, fuzzy
@@ -1847,7 +1847,7 @@ msgstr ""
 "semplice di così!<br><br>Serve aiuto? Clicca <a href=\"/help\" class"
 "=\"alert-link\">qui</a> e troverai le istruzioni che ti "
 "occorrono.<br><br>Hai altre domande particolari? Contatta gli <a "
-"href=\"mailto:gigomatic.superuser@gmail.com\" class=\"alert-"
+"href=\"mailto:superuser@gig-o-matic.com\" class=\"alert-"
 "link\">amministratori del Gig-O-Matic</a>."
 
 #: templates/welcome.html:12

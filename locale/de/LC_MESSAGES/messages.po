@@ -70,7 +70,7 @@ msgstr ""
 "Hallo! Du wurdest als Mitglied von {0} bestätigt und kannst nun anfangen,"
 "  Gig-o-Matic für dein Bandmanagement zu nutzen.\n"
 "\n"
-"http://Gig-o-Matic.appspot.com/band_info.html?bk={1}\n"
+"http://www.gig-o-matic.com/band_info.html?bk={1}\n"
 "\n"
 "Danke,\n"
 "Dein Gig-o-Matic Team"
@@ -213,7 +213,7 @@ msgstr ""
 "Bitte melde dich an und\n"
 "bestätige die Mitgliedschaft.\n"
 "\n"
-"http://Gig-o-Matic.appspot.com/band_info.html?bk={2}\n"
+"http://www.gig-o-matic.com/band_info.html?bk={2}\n"
 "\n"
 "Danke,\n"
 "Dein Gig-o-Matic Team"
@@ -244,7 +244,7 @@ msgstr ""
 "Als ein Mitglied von {0} wurdest du eingeladen, Gig-o-Matic beizutreten "
 "um das Organisieren von euren Terminen zu vereinfachen. Du musst nur noch"
 " ein Passwort erstellen, um dich anmelden zu können. Dann kannst du dich "
-"auf http://gig-o-matic.appspot.com einloggen.\n"
+"auf http://www.gig-o-matic.com einloggen.\n"
 "\n"
 "Die URL zum Passwort erstellen ist:\n"
 "{1}\n"
@@ -1347,7 +1347,7 @@ msgstr "...einen Vorschlag machen?"
 
 #: templates/help.html:18
 msgid "help_answer_3"
-msgstr "Lass es mich <a href=\"mailto:gigomatic.superuser@gmail.com\">wissen</a>!"
+msgstr "Lass es mich <a href=\"mailto:superuser@gig-o-matic.com\">wissen</a>!"
 
 #: templates/help.html:19
 msgid "help_question_4"
@@ -1355,7 +1355,7 @@ msgstr "...den Administrator kontaktieren?"
 
 #: templates/help.html:19
 msgid "help_answer_4"
-msgstr "<a href=\"mailto:gigomatic.superuser@gmail.com\">Sende eine Email!</a>"
+msgstr "<a href=\"mailto:superuser@gig-o-matic.com\">Sende eine Email!</a>"
 
 #: templates/help_band_request.html:3
 msgid "New Band!"
@@ -1835,7 +1835,7 @@ msgstr ""
 "eine Bestätigungsmail. Groovy.<br><br>Brauchst du Hilfe? <a "
 "href=\"/help\" class=\"alert-link\">Hier</a> werden hoffentlich alle "
 "deine Fragen beantwortet.<br><br>Das hat nicht geholfen? Kontaktiere die "
-"<a href=\"mailto:gigomatic.superuser@gmail.com\" class=\"alert-"
+"<a href=\"mailto:superuser@gig-o-matic.com\" class=\"alert-"
 "link\">Gig-o-Matic Overlords</a>."
 
 #: templates/welcome.html:12
