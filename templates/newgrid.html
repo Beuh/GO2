@@ -119,6 +119,15 @@ function fixtitlerows() {
     $("#toprow").height(height);
 }
 
+function addwait(atright) {
+	the_new_block = '<div class="scrollthing" id="waiting"><i class="fas fa-spinner fa-pulse fa-lg"></i></div>'
+	if (atright) {
+	    $('#thegigs').append(the_new_block);
+	} else {
+	    $('#thegigs').prepend(the_new_block);
+	}
+}
+
 function handlegigplans(the_plans,atright) {
 
 	the_plans.forEach( function(gig) {
@@ -168,6 +177,7 @@ function handlegigplans(the_plans,atright) {
             }
 		});
 		the_new_block += '</div>';
+		$('#waiting').remove();
         if (atright) {
             $('#thegigs').append(the_new_block);
             scrollRight();
@@ -198,6 +208,7 @@ function handlenogigsformonth(the_month_string,atright) {
         }
 	});
     the_new_block+='</div>';
+	$('#waiting').remove();
     if (atright) {
         $('#thegigs').append(the_new_block);
         scrollRight();
@@ -218,11 +229,13 @@ function addrightbutton(the_month) {
 
 function moreright() {
 	the_last_month += 1;
+	addwait(true)
 	loadgigs(false,true);
 }
 
 function moreleft() {
     the_first_month -= 1;
+    addwait(false)
     loadgigs(false,false);
 }
 
